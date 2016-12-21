@@ -7,7 +7,7 @@ int main() {
 	int n = sizeof(arr)/sizeof(int);
 	int pivot;
 	int save;
-	
+	int count = 0;
 	if(n % 2 == 0) {
 		pivot = ((n+2)/2)-1;
 	}
@@ -15,51 +15,36 @@ int main() {
 		pivot = ((n+1)/2)-1;
 	}
 
-	
-	for(int x = 0; x < n; x++) {
-		
-		if(arr[x] > arr[pivot] && x < pivot) { // moves to the right
+	for(int x = pivot - 1; x >= 0; x--) {
+		if(arr[x] > arr[pivot]) {
 			save = arr[x];
-			
-			for(int y = x; y <= pivot; y++ )
-				arr[y] = arr[y+1]; 	
-			
+			for(int y = x; y <= pivot; y++)
+				arr[y] = arr[y+1];
 			arr[pivot] = save;
-			x = 0;
+			//x = pivot-1;
+			pivot--;
 		}
-		
-		else if(arr[x] < arr[pivot] && x > pivot) { // moves to the left
-			save = arr[x];
-			
-			for(int z = x ; z >= pivot; z--)
-				arr[z] = arr[z-1];
-
-			arr[pivot] = save;
-			x = 0;
-		}
+		count++;
 	}
 
+	for(int h = pivot+1; h < n; h++) {
+		if(arr[h] < arr[pivot] && h > pivot) { // moves to the left
+			save = arr[h];
+			for(int z = h ; z >= pivot; z--)
+				arr[z] = arr[z-1];
+			arr[pivot] = save;
+			//h = pivot+1;
+			pivot++;
+		}
+		count++;
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-	for(int w = 0; w < n; w++)
-		cout << arr[w] << " " << flush;
-
-	cout << endl;
+	for(int w = 0; w < n; w++){cout << arr[w] << " " << flush;}cout << endl;	
 
 	//	cout << save;
 	//	cout << n << endl;
-	//	cout << pivot << endl;	
-
+	cout << count << endl;
+	cout << pivot << endl;
+	cout << arr[pivot] << endl;
 	return 0;
 }

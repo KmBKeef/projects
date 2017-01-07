@@ -1,36 +1,38 @@
 #include <iostream>
+#include <string.h>
 using namespace std;
 
-char arr[35][2] = {
-	{'a','b'},{'a','c'},{'a','d'},{'a','d'},{'a','k'},{'a','f'},{'a','j'},{'a','g'},{'a','i'},{'a','h'},{'b','h'},{'b','c'},{'b','d'},{'b','e'},{'c','g'},{'c','i'},{'c','d'},{'c','e'},{'d','f'},{'d','e'},{'e','f'},{'e','g'},{'e','h'},{'e','k'},{'f','g'},{'f','h'},{'f','j'},{'g','h'},{'g','i'},{'h','i'},{'h','j'},{'h','k'},{'i','j'},{'i','k'},{'j','k'}
-};
+const char* verteces[]={ "ab", "ac", "ad", "ae", "ak", "af", "aj", "ag", "ai", "ah", "bh", "bc", "bd", "be", "cg", "ci", "cd", "ce", "dj", "df", "de", "ef", "eg", "eh", "ek", "fg", "fh", "fj", "gh", "gi", "hi", "hj", "hk", "ij", "ik", "jk"};
 
-char print() {
-	for(int x=0; x < 35 ; x++) {
-		for(int y=0; y < 2; y++) {
-			cout << arr[x][y] << ", "  << flush;
-		}
-		cout << endl;
-	}	
-}
+const char* edges[] = {"hijk", "hgfe", "bcde", "abh", "aek", "adfj", "acgi"};
+
 int count = 0;
 int main() {
-
-	//	cout << sizeof(arr)/2 << endl;
-	//	print();
-	
-	for(int x=0; x < 35 ; x++) {
-			for(int y=0; y < 35 ; y++) {
-					for(int z=0; z < 35 ; z++) {
-							if((arr[x][0] == arr[y][0] && arr[y][1] == arr[z][0] && arr[x][1] == arr[z][1])) {
-								cout << "[" << arr[x][0] <<  " " << arr[x][1] << "] [" << arr[y][0] << " " << arr[y][1] << "] [" << arr[z][0] << " " << arr[z][1] << "] " << endl; 
-								count++;
-							}
+	int vlen = sizeof(verteces)/sizeof(const char*);
+	int elen = sizeof(edges)/sizeof(const char*);
+	cout << "vlen: " << vlen << " elen: " << elen << endl;
+	for(int x=0; x < vlen ; x++) {
+		for(int y=0; y < vlen ; y++) {
+			for(int z=0; z < vlen ; z++) {
+				if((verteces[x][0] == verteces[y][0] && verteces[y][1] == verteces[z][1] && verteces[x][1] == verteces[z][0])) {
+					char buffer[7];
+					sprintf(buffer, "%s%s%s", verteces[x],verteces[y],verteces[z]);
+					bool straight = false;
+			    for(int e=0; e < elen; e++) {
+						if(strchr(edges[e], buffer[0]) && strchr(edges[e], buffer[1]) && strchr(edges[e], buffer[3])) {
+							straight = true;
+							break;
 						}
+					}	
+					if(straight == false) {
+					  printf("%s\n", buffer);
+						count++;
 					}
 				}
+			}
+		}
+	}
 
-	
 	cout << count << endl;
 	return 0;
 }
